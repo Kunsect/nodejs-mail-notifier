@@ -99,6 +99,13 @@ Notifier.prototype.scan = function (callback) {
             return;
         }
         self.dbg('found %d new messages', seachResults.length);
+        self.imap.setFlags(seachResults, ['\\Seen'], function(err) {
+            if (!err) {
+                console.log("marked as read");
+            } else {
+                console.log(JSON.stringify(err, null, 2));
+            }
+        })
         var fetch = self.imap.fetch(seachResults, {
             markSeen: self.options.markSeen !== false,
             bodies: ''
